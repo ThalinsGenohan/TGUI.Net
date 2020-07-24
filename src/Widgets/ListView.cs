@@ -221,6 +221,30 @@ namespace TGUI
         }
 
         /// <summary>
+        /// Inserts an item to the list
+        /// </summary>
+        /// <param name="index">The index to insert the item at</param>
+        /// <param name="text">The caption of the items you want to add</param>
+        public void InsertItem(uint index, string text)
+        {
+            return tguiListView_insertItem(CPointer, index, Util.ConvertStringForC_UTF32(text));
+        }
+
+        /// <summary>
+        /// Inserts an item with values for multiple columns to the list
+        /// </summary>
+        /// <param name="index">The index to insert the item at</param>
+        /// <param name="item">Texts for each column</param>
+        public uint InsertItem(uint index, IReadOnlyList<string> item)
+        {
+            IntPtr[] itemForC = new IntPtr[item.Count];
+            for (int i = 0; i < item.Count; ++i)
+                itemForC[i] = Util.ConvertStringForC_UTF32(item[i]);
+
+            return tguiListView_insertItemRow(CPointer, index, itemForC, (uint)itemForC.Length);
+        }
+
+        /// <summary>
         /// Changes an item with values for multiple columns to the list
         /// </summary>
         /// <param name="index">Index of the item to update</param>
